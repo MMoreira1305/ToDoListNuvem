@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Simples com LocalStorage</title>
+    <link rel="stylesheet" href="/css/stylePublic.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            color: white;
+        }
+
+        main {
+            height: 100vh;
+            width: 100vw;
+            background-image: linear-gradient(45deg, rgb(66, 66, 255),rgb(255, 102, 247), purple);
+            background-size: 400% 400%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            animation: backgorundTransition 8s ease-in-out infinite; 
+            gap: 30px;
+        }
+
+        @keyframes backgorundTransition {
+            0% {
+                background-position: 0% 80%;
+            }
+
+            50% {
+                background-position: 80% 100%;
+            }
+
+            100% {
+                background-position: 0% 90%;
+            }
+        }
+
+        .form-div {
+            height: 34%;
+            width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: rgb(255, 255, 255);
+            color: black;
+            border-radius: 2%;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            gap: 20px;
+            padding: 20px;
+            
+        }
+
+        .header{
+            gap: 30px;
+        }
+
+        .interaction_container {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .username {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-right: -10px;
+            color: rgb(32, 32, 32);
+            margin-left: 50px;
+        }
+
+        .input_username {
+            padding: 2%;
+            width: 70%;
+            font-size: 20px;
+        }
+
+        .btn_input {
+            padding: 2%;
+            width: 70%;
+            font-size: 20px;
+            background-color: rgb(235, 235, 235);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            color: rgb(124, 124, 124);
+        }
+
+        input {
+            background-color: rgb(235, 235, 235);
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1.2rem;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .add_button {
+            width: 30%;
+            padding: 2%;
+        }
+
+        button {
+            border: none;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            border-radius: 7%;
+            cursor: pointer;
+            padding: 4%;
+            width: 20%;
+        }
+
+        .btn-redirecionar {
+            border-radius: 5px;
+            border-style: inherit;
+            border-color: aliceblue;
+            color: black;
+            font-weight: 500;
+            background-color: rgb(66, 66, 255);
+            box-shadow: 2em black;
+            font-size: 15px;
+            align-items: flex-end;
+            justify-content: end;
+            margin-left: 20px;
+            width: 150px;
+            height: 100%;
+            text-align: center;
+        }
+
+        .btn-redirecionar:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .user_list {
+            width: 90%;
+            justify-content: center;
+            align-items: center;
+            
+        }
+
+        .user-name {
+            width: 100%;
+            margin-top: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            color: rgb(32, 32, 32);
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            margin-bottom: 10px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-email {
+            width: 100%;
+            margin-top: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            color: rgb(32, 32, 32);
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            margin-bottom: 10px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-phone {
+            width: 100%;
+            margin-top: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            color: rgb(32, 32, 32);
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            margin-bottom: 10px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-date {
+            width: 100%;
+            margin-top: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            color: rgb(32, 32, 32);
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            margin-bottom: 10px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-cep {
+            width: 100%;
+            margin-top: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            color: rgb(32, 32, 32);
+            padding: 10px;
+            border-radius: 5px;
+            background-color: white;
+            margin-bottom: 10px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .button-div > .button-delete {
+            background-color: #26e977;
+        }
+
+        .button-div > .button-edit {
+            background-color: #5e5ece;
+        }
+
+        .button-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .button-div > button {
+            color: white;
+            display: flex;
+            justify-self: center;
+            align-items: center;
+            width: 100%;
+            padding: 10%;
+            margin-top: 20px;
+            background-color: rgb(255, 255, 255);
+        }
+
+        .button-div > button:hover {
+            transform: scale(1.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .father {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        
+        <section class="form-div">
+            <div class="header">
+                <label for="username" class="username">To do LIST </label>
+                <button id="button-redirecionar" class="btn-redirecionar">Ver tarefas feitas</button>
+            </div>
+            
+            <div class="interaction_container">
+                <input type="text" id="atividade" class="input_username" placeholder="Atividade" maxlength="50"/>
+                <!-- <input type="checkbox" id="grau" class="input_username" placeholder="Grau de dificuldade" maxlength="16"/> -->
+                <select id="grau" class="btn_input">
+                    <option value="Fácil">Fácil</option>
+                    <option value="Médio">Médio</option>
+                    <option value="Difícil">Difícil</option>
+                </select>
+
+                <!-- <input type="text" id="situacao" class="input_username" placeholder="Atrasada/Em prazo" maxlength="16"/> -->
+                <select id="situacao" class="btn_input">
+                    <option value="Atrasada">Atrasada</option>
+                    <option value="Em prazo">Em prazo</option>
+                </select>
+
+                <input type="text" id="date" class="input_username" placeholder="Até quando" maxlength="16"/>
+                <input type="text" id="descricao" class="input_username" placeholder="Descrição" maxlength="30"/>
+                <button id="add-user" class="add_button">Adicionar</button>
+                <button id="update-user" style="display: none;">Atualizar</button>
+            </div>
+        </section>
+
+    <div id="user-list" class="user_list"></div>
+    </main>
+   
+
+    <script>
+        document.getElementById('button-redirecionar').addEventListener('click', function() {
+            window.location.href = '/';
+        });
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let usersDelete = JSON.parse(localStorage.getItem('usersDelete')) || [];
+        let currentUser = null;
+    
+        const nameInput = document.getElementById('atividade');
+        const graulInput = document.getElementById('grau');
+        const situacaoInput = document.getElementById('situacao');
+        const dateInput = document.getElementById('date');
+        const descricaoInput = document.getElementById('descricao');
+        const addUserButton = document.getElementById('add-user');
+        const updateUserButton = document.getElementById('update-user');
+        const userListDiv = document.getElementById('user-list');
+    
+        function renderUsers() {
+            userListDiv.innerHTML = '';
+            users.forEach((user, index) => {
+                // Cria a div pai
+                const fatherDiv = document.createElement('div');
+                fatherDiv.classList.add('father');
+
+                // Cria a div para o nome da atividade
+                const nameDiv = document.createElement('div');
+                nameDiv.textContent = user.name;
+                nameDiv.classList.add('user-name');
+                fatherDiv.appendChild(nameDiv);
+
+                // Cria a div para o nível de dificuldade
+                const grauDiv = document.createElement('div');
+                grauDiv.textContent = user.grau;
+                grauDiv.classList.add('user-email');
+                fatherDiv.appendChild(grauDiv);
+
+                // Cria a div para a Data de Término
+                const situacaoDiv = document.createElement('div');
+                situacaoDiv.textContent = user.situacao;
+                situacaoDiv.classList.add('user-date');
+                fatherDiv.appendChild(situacaoDiv);
+
+                // Cria a div para a situação
+                const dateDiv = document.createElement('div');
+                dateDiv.textContent = user.date;
+                dateDiv.classList.add('user-phone');
+                fatherDiv.appendChild(dateDiv);
+
+                // Cria a div para a descricao
+                const descricaoDiv = document.createElement('div');
+                descricaoDiv.textContent = user.descricao;
+                descricaoDiv.classList.add('user-cep');
+                fatherDiv.appendChild(descricaoDiv);
+
+                // Cria a div para os botões
+                const buttonDiv = document.createElement('div');
+                buttonDiv.classList.add('button-div');
+
+                const deleteUserButton = document.createElement('button');
+                deleteUserButton.textContent = 'Feito';
+                deleteUserButton.classList.add('button-delete');
+                deleteUserButton.addEventListener('click', function() {
+                    usersDelete.push(users[index]);
+                    users.splice(index, 1);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('usersDelete', JSON.stringify(usersDelete));
+                    renderUsers();
+                });
+                buttonDiv.appendChild(deleteUserButton);
+
+                const editUserButton = document.createElement('button');
+                editUserButton.textContent = 'Editar';
+                editUserButton.classList.add('button-edit');
+                editUserButton.addEventListener('click', function() {
+                    currentUser = index;
+                    nameInput.value = user.name;
+                    graulInput.value = user.grau;
+                    situacaoInput.value = user.situacao;
+                    dateInput.value = user.date;
+                    descricaoInput.value = user.descricao;
+
+                    addUserButton.style.display = 'none';
+                    updateUserButton.style.display = 'inline';
+                });
+                buttonDiv.appendChild(editUserButton);
+
+                // Adiciona a div dos botões à div pai
+                fatherDiv.appendChild(buttonDiv);
+
+                // Adiciona a div pai à lista de usuários
+                userListDiv.appendChild(fatherDiv);
+            });
+        }
+
+        addUserButton.addEventListener('click', function() {
+            const name = nameInput.value;
+            const grau = graulInput.value;
+            const situacao = situacaoInput.value;
+            const date = dateInput.value;
+            const descricao = descricaoInput.value;
+            const regex = /^[a-zA-Z\s]+$/;
+            
+            if (name.trim() === '' || !regex.test(name)) {
+                alert('O nome da atividade não pode ser vazio, conter números ou caracteres especiais!');
+                return;
+            }
+
+            users.push({ name: name, grau: grau, situacao: situacao, date: date, descricao: descricao });
+            localStorage.setItem('users', JSON.stringify(users));
+            nameInput.value = '';
+            graulInput.value = '';
+            situacaoInput.value = '';
+            dateInput.value = '';
+            descricaoInput.value = '';
+            renderUsers();
+        });
+
+        updateUserButton.addEventListener('click', function() {
+            const name = nameInput.value;
+            const grau = graulInput.value;
+            const date = dateInput.value;
+            const situacao = situacaoInput.value;
+            const descricao = descricaoInput.value;
+            const regex = /^[a-zA-Z\s]+$/;
+            
+            if (name.trim() === '' || !regex.test(name)) {
+                alert('O nome da atividade não pode ser vazio, conter números ou caracteres especiais!');
+                return;
+            }
+
+            users[currentUser] = { name: name, grau: grau, situacao: situacao, date: date, descricao: descricao };
+            localStorage.setItem('users', JSON.stringify(users));
+            nameInput.value = '';
+            graulInput.value = '';
+            dateInput.value = '';
+            situacaoInput.value = '';
+            descricaoInput.value = '';
+            addUserButton.style.display = 'inline';
+            updateUserButton.style.display = 'none';
+            renderUsers();
+        });
+
+        renderUsers();
+    </script>
+    
+</body>
+</html>
